@@ -1,19 +1,17 @@
 import path from "node:path";
 import dotenv from "dotenv";
-import joi from "joi";
-import { AppEnvironment } from "../types/interfaces";
+import { z } from "zod";
 
 dotenv.config({ path: path.join(__dirname, "../", "../", ".env.local") });
 
-const schema = joi
-  .object<AppEnvironment>({
-    PORT: joi.number().default(3001),
-  })
-  .unknown();
+const schema = z.object({
+  PORT: z
+    .string()
+    .regex(/^\d+$/)
+    .default("3001")
+    .transform((value) => Number.parseInt(value)),
+});
 
-const result = schema.validate(process.env);
+const result = schema.parse(process.env);
 
-if (result.error)
-  throw new Error(`Environment Variables Validation error: ${result.error}`);
-
-export const environment = result.value!;
+export const environment = result;
