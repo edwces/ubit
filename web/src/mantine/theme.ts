@@ -16,5 +16,8 @@ export const theme = {
     ],
   },
   primaryColor: "brand",
-  headings: { fontFamily: "Poppins", sizes: { h1: { fontSize: 50 } } },
+  headings: {
+    fontFamily: "Poppins",
+    sizes: { h1: { fontSize: 50 }, h2: { fontSize: 32 } },
+  },
 } as MantineThemeOverride;
