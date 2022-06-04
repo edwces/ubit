@@ -1,2 +1,5 @@
 export { PostHeader } from "./PostHeader";
-export { PostActionButtons } from "./PostActionButtons";
+export { PostFooter } from "./PostFooter";
+export { LikeButton } from "./LikeButton";
+export { DislikeButton } from "./DislikeButton";
+export { PostLayout } from "./PostLayout";

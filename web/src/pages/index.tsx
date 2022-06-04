@@ -1,12 +1,14 @@
 import type { NextPage } from "next";
 import { MainLayout } from "../modules/layout";
-import { PostActionButtons, PostHeader } from "../modules/post";
+import { PostLayout } from "../modules/post";
+import { Text } from "@mantine/core";
 
 const Home: NextPage = () => {
   return (
     <MainLayout>
-      <PostHeader />
-      <PostActionButtons />
+      <PostLayout>
+        <Text size="lg">Hello there</Text>
+      </PostLayout>
     </MainLayout>
   );
 };

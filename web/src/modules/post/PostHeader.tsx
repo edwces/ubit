@@ -1,11 +1,28 @@
-import { Avatar, Group, Text } from "@mantine/core";
+import { Avatar, Group, Stack, Text } from "@mantine/core";
 
-export function PostHeader() {
+interface PostHeaderProps {
+  userName: string;
+  avatarUrl: string;
+  datePosted: string;
+}
+
+export function PostHeader({
+  userName,
+  avatarUrl,
+  datePosted,
+}: PostHeaderProps) {
   return (
     <Group position="apart">
-      <Group spacing={10}>
-        <Avatar radius="xl" />
-        <Text color="dimmed">John simley</Text>
+      <Group spacing={15}>
+        <Avatar radius="xl" size="lg" src={avatarUrl} />
+        <Stack spacing={0}>
+          <Text size="lg" weight={500}>
+            {userName}
+          </Text>
+          <Text color="dimmed" size="sm">
+            {datePosted}
+          </Text>
+        </Stack>
       </Group>
     </Group>
   );
