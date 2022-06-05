@@ -1,2 +1,2 @@
 export { environment } from "./environment";
-export { mikroORMConfig } from "./mikro-orm.config";
+export { default as mikroORMConfig } from "./mikro-orm.config";

@@ -1,7 +1,7 @@
 import { Options } from "@mikro-orm/core";
 import { environment } from "./environment";
 
-export const mikroORMConfig = {
+const mikroORMConfig = {
   type: "postgresql",
   clientUrl: environment.DB_URL,
   debug: environment.DB_DEBUG,
@@ -16,3 +16,5 @@ export const mikroORMConfig = {
     path: "dist/db/seeder",
   },
 } as Options;
+
+export default mikroORMConfig;
