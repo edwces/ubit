@@ -3,16 +3,18 @@ import { app } from "./app";
 import { MikroORM, RequestContext } from "@mikro-orm/core";
 import { NextFunction, Request, Response } from "express";
 import { EntityManager } from "@mikro-orm/postgresql";
+import { auth } from "./modules/auth";
 
 const bootstrap = async () => {
   const orm = await MikroORM.init(mikroORMConfig);
 
   app.use((request: Request, _: Response, next: NextFunction) => {
     RequestContext.create(orm.em, () => {
-      request.em = orm.em as EntityManager;
+      request.em = orm.em.fork() as EntityManager;
       next();
     });
   });
+  app.use("/auth", auth);
 
   app.listen(environment.PORT, () => {
     console.log(`Running on http://localhost:${environment.PORT}`);

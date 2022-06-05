@@ -17,7 +17,7 @@ export class User extends CustomBaseEntity {
   password!: string;
 
   @Enum(() => UserRole)
-  role = UserRole.USER;
+  role? = UserRole.USER;
 
   @Property()
   avatar?: string = "";
