@@ -10,6 +10,11 @@ const schema = z.object({
     .regex(/^\d+$/)
     .default("3001")
     .transform((value) => Number.parseInt(value)),
+  DB_URL: z.string().url(),
+  DB_DEBUG: z
+    .union([z.literal("true"), z.literal("false")])
+    .default("false")
+    .transform((value) => value === "true"),
 });
 
 const result = schema.parse(process.env);
