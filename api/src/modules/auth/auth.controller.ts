@@ -53,16 +53,39 @@ export async function loginUser(request: Request, response: Response) {
     name: userWithSameEmail.name,
   };
 
-  const accessToken = jwt.sign(user, environment.JWT_ACCESS_SECRET, {
+  const accessToken = jwt.sign({ user }, environment.JWT_ACCESS_SECRET, {
     expiresIn: 1000 * 60 * 60,
   });
-  const refreshToken = jwt.sign({}, environment.JWT_REFRESH_SECRET, {
-    expiresIn: 1000 * 60 * 60 * 60,
-  });
+  const refreshToken = jwt.sign(
+    { user: { id: userWithSameEmail.id } },
+    environment.JWT_REFRESH_SECRET,
+    {
+      expiresIn: 1000 * 60 * 60 * 60,
+    }
+  );
 
   response.cookie("refresh_token", refreshToken, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 60,
   });
   response.status(HttpStatus.OK).json({ token: accessToken, user });
+}
+
+export async function getNewToken(request: Request, response: Response) {
+  const userByRefreshData = await request.em.findOne(
+    User,
+    response.locals.user.id
+  );
+
+  const user = {
+    email: userByRefreshData.email,
+    name: userByRefreshData.name,
+    id: userByRefreshData.id,
+  };
+
+  const accessToken = jwt.sign({ user }, environment.JWT_ACCESS_SECRET, {
+    expiresIn: 1000 * 60 * 60,
+  });
+
+  response.status(HttpStatus.OK).json({ token: accessToken });
 }
