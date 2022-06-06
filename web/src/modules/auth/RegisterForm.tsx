@@ -1,11 +1,4 @@
-import {
-  TextInput,
-  PasswordInput,
-  Button,
-  Space,
-  Stack,
-  Paper,
-} from "@mantine/core";
+import { TextInput, PasswordInput, Button, Stack, Paper } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { FormEvent } from "react";
 import { RegisterFormValues } from "../../types/interfaces";
@@ -18,6 +11,7 @@ const schema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .min(5, { message: "Password should consist of atleast 5 characters" }),
+  name: z.string({ required_error: "Name is required" }),
 });
 
 interface RegisterFormProps {
@@ -30,6 +24,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
     initialValues: {
       email: "",
       password: "",
+      name: "",
     },
   });
 
@@ -37,6 +32,12 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
     <Paper withBorder p="md" shadow="md" radius="md">
       <form onSubmit={form.onSubmit(onSubmit)}>
         <Stack spacing="sm">
+          <TextInput
+            aria-required
+            label="name"
+            placeholder="yourname"
+            {...form.getInputProps("name")}
+          />
           <TextInput
             aria-required
             label="email"

@@ -5,6 +5,9 @@ import type { AppProps } from "next/app";
 import { theme } from "../mantine";
 import { AppMetadata } from "../modules/meta";
 import { useTopProgressBar } from "../modules/util";
+import { QueryClientProvider } from "react-query";
+import { queryClient } from "../lib";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 function MyApp({ Component, pageProps }: AppProps) {
   useTopProgressBar();
@@ -12,9 +15,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <AppMetadata />
-      <MantineProvider withNormalizeCSS withGlobalStyles theme={theme}>
-        <Component {...pageProps} />
-      </MantineProvider>
+      <QueryClientProvider client={queryClient}>
+        <MantineProvider withNormalizeCSS withGlobalStyles theme={theme}>
+          <Component {...pageProps} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </MantineProvider>
+      </QueryClientProvider>
     </>
   );
 }
