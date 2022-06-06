@@ -4,16 +4,17 @@ import { SessionData } from "../types/interfaces/sessionData";
 interface SessionStoreState {
   data: SessionData;
   status: "idle" | "signIn" | "signOut";
+  token: string | null;
 }
 
 interface SessionStoreActions {
-  login: (data: SessionData) => void;
-  logout: () => void;
+  setSignedIn: (data: SessionData, token: string) => void;
+  setSignedOut: () => void;
 }
 
 type SessionStore = SessionStoreState & SessionStoreActions;
 
-export const sessionStore = create<SessionStore>((set) => ({
+export const useSession = create<SessionStore>((set) => ({
   data: {
     user: {
       id: null,
@@ -21,6 +22,12 @@ export const sessionStore = create<SessionStore>((set) => ({
     },
   },
   status: "idle",
-  login: (data) => set({ status: "signIn", data }),
-  logout: () => set((state) => ({ ...state, status: "signOut" })),
+  token: null,
+  setSignedIn: (data, token) => set({ status: "signIn", data, token }),
+  setSignedOut: () =>
+    set({
+      data: { user: { id: null, email: null } },
+      status: "signOut",
+      token: null,
+    }),
 }));
