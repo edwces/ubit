@@ -15,6 +15,8 @@ const schema = z.object({
     .union([z.literal("true"), z.literal("false")])
     .default("false")
     .transform((value) => value === "true"),
+  JWT_ACCESS_SECRET: z.string(),
+  JWT_REFRESH_SECRET: z.string(),
 });
 
 const result = schema.parse(process.env);
