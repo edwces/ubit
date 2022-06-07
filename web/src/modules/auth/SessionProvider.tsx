@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react";
 import { refreshToken } from "../../services/api";
 import { useSession } from "../../stores/useSession";
+import { PageLoader } from "../util/PageLoader";
 
 interface SessionProviderProps {
   children: ReactNode;
@@ -27,7 +28,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
       });
   }, []);
 
-  if (isLoading) return <div>Loading PI PuPOefihihdjh</div>;
+  if (isLoading) return <PageLoader />;
 
   return <>{children}</>;
 }

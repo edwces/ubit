@@ -1,1 +1,1 @@
-export { useTopProgressBar } from "./useTopProgressBar";
+export { useTopProgressBar } from "./hooks/useTopProgressBar";
