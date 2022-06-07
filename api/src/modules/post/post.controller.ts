@@ -8,7 +8,10 @@ import { postsSchema } from "./schemas/posts.schema";
 
 export async function getAllPosts(request: Request, response: Response) {
   const { limit, offset }: z.infer<typeof postsSchema> = request.query as any;
-  const qb = request.em.createQueryBuilder(Post).select("*");
+  const qb = request.em
+    .createQueryBuilder(Post, "p")
+    .select("p.*")
+    .joinAndSelect("p.author", "a");
 
   if (limit) {
     qb.limit(limit);
