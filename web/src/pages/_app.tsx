@@ -8,6 +8,7 @@ import { useTopProgressBar } from "../modules/util";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "../lib";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { SessionProvider } from "../modules/auth/SessionProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   useTopProgressBar();
@@ -17,8 +18,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AppMetadata />
       <QueryClientProvider client={queryClient}>
         <MantineProvider withNormalizeCSS withGlobalStyles theme={theme}>
-          <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} />
+          <SessionProvider>
+            <Component {...pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </SessionProvider>
         </MantineProvider>
       </QueryClientProvider>
     </>
