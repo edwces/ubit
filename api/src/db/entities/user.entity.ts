@@ -1,5 +1,14 @@
-import { Entity, Enum, PrimaryKey, Property, Unique } from "@mikro-orm/core";
+import {
+  Collection,
+  Entity,
+  Enum,
+  OneToMany,
+  PrimaryKey,
+  Property,
+  Unique,
+} from "@mikro-orm/core";
 import { CustomBaseEntity } from "./base.entity";
+import { Post } from "./post.entity";
 
 @Entity()
 export class User extends CustomBaseEntity {
@@ -21,6 +30,9 @@ export class User extends CustomBaseEntity {
 
   @Property()
   avatar?: string = "";
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts = new Collection<Post>(this);
 }
 
 export enum UserRole {
