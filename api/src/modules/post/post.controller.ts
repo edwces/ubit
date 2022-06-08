@@ -1,6 +1,7 @@
+import { wrap } from "@mikro-orm/core";
 import { Request, Response } from "express";
 import { z } from "zod";
-import { PostVote } from "../../db/entities/post-vote.entity";
+import { PostVote, PostVoteType } from "../../db/entities/post-vote.entity";
 import { Post } from "../../db/entities/post.entity";
 import { User } from "../../db/entities/user.entity";
 import { HttpStatus } from "../../types/interfaces";
@@ -45,11 +46,27 @@ export async function addVoteToPost(request: Request, response: Response) {
   const id = Number.parseInt(request.params.id);
   const { type }: z.infer<typeof postVoteSchema> = request.body;
 
+  const post = await request.em.findOne(Post, id);
+  if (!post)
+    return response
+      .status(HttpStatus.NOT_FOUND)
+      .json({ message: "Post with that id does not exist" });
+
+  const newVoteData = { likes: post.likes!, dislikes: post.dislikes! };
+  if (type === PostVoteType.LIKE) {
+    newVoteData.likes += 1;
+  } else if (type === PostVoteType.DISLIKE) {
+    newVoteData.dislikes += 1;
+  }
+
+  wrap(post).assign(newVoteData);
+
   const vote = request.em.create(PostVote, {
     post: id,
     voter: response.locals.user.id,
     type,
   });
+
   await request.em.persistAndFlush(vote);
 
   response.status(HttpStatus.CREATED).json({ success: true });

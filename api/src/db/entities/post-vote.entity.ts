@@ -1,9 +1,10 @@
-import { Entity, Enum, ManyToOne, PrimaryKey } from "@mikro-orm/core";
+import { Entity, Enum, ManyToOne, PrimaryKey, Unique } from "@mikro-orm/core";
 import { CustomBaseEntity } from "./base.entity";
 import { Post } from "./post.entity";
 import { User } from "./user.entity";
 
 @Entity()
+@Unique({ properties: ["post", "voter"] })
 export class PostVote extends CustomBaseEntity {
   @PrimaryKey()
   id!: number;

@@ -24,6 +24,12 @@ export class Post extends CustomBaseEntity {
   @OneToMany(() => PostVote, (postVote) => postVote.post)
   votes = new Collection<PostVote>(this);
 
+  @Property()
+  likes?: number = 0;
+
+  @Property()
+  dislikes?: number = 0;
+
   @ManyToOne(() => User)
   author!: User;
 }
