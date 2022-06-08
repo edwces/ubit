@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { z } from "zod";
+import { PostVote } from "../../db/entities/post-vote.entity";
 import { Post } from "../../db/entities/post.entity";
 import { User } from "../../db/entities/user.entity";
 import { HttpStatus } from "../../types/interfaces";
 import { postCreateSchema } from "./schemas/post-create.schema";
+import { postVoteSchema } from "./schemas/post-vote.schema";
 import { postsSchema } from "./schemas/posts.schema";
 
 export async function getAllPosts(request: Request, response: Response) {
@@ -35,6 +37,20 @@ export async function createPost(request: Request, response: Response) {
 
   const post = request.em.create(Post, { author: authorId, text });
   await request.em.persistAndFlush(post);
+
+  response.status(HttpStatus.CREATED).json({ success: true });
+}
+
+export async function addVoteToPost(request: Request, response: Response) {
+  const id = Number.parseInt(request.params.id);
+  const { type }: z.infer<typeof postVoteSchema> = request.body;
+
+  const vote = request.em.create(PostVote, {
+    post: id,
+    voter: response.locals.user.id,
+    type,
+  });
+  await request.em.persistAndFlush(vote);
 
   response.status(HttpStatus.CREATED).json({ success: true });
 }

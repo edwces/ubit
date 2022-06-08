@@ -19,6 +19,6 @@ export class PostVote extends CustomBaseEntity {
 }
 
 export enum PostVoteType {
-  DISLIKE,
-  LIKE,
+  DISLIKE = -1,
+  LIKE = 1,
 }
