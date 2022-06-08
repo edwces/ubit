@@ -87,5 +87,5 @@ export async function getNewToken(request: Request, response: Response) {
     expiresIn: 1000 * 60 * 60,
   });
 
-  response.status(HttpStatus.OK).json({ token: accessToken });
+  response.status(HttpStatus.OK).json({ token: accessToken, user });
 }

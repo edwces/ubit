@@ -18,7 +18,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
     // request for new token from /token endpoint
     refreshToken()
       .then((data) => {
-        setSignedIn(data.user, data.token);
+        setSignedIn({ user: data.user }, data.token);
         setLoading(false);
       })
       .catch(() => {
