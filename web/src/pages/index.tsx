@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import { MainLayout } from "../modules/layout";
-import { FeedScrollbar } from "../modules/post/FeedScrollbar";
+import { FeedScrollArea } from "../modules/post/FeedScrollArea";
 
 const Home: NextPage = () => {
   return (
     <MainLayout>
-      <FeedScrollbar />
+      <FeedScrollArea />
     </MainLayout>
   );
 };
