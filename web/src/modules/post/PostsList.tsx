@@ -25,7 +25,11 @@ export function PostsList({ data = [] }: PostsListProps) {
               datePosted={post.createdAt}
             />
             <Text size="lg">{post.text}</Text>
-            <PostFooter likeNumber={3884} dislikeNumber={23405} />
+            <PostFooter
+              likeNumber={3884}
+              dislikeNumber={23405}
+              postId={post.id}
+            />
           </Stack>
         </Paper>
       ))}

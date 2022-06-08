@@ -9,9 +9,11 @@ import { QueryClientProvider } from "react-query";
 import { queryClient } from "../lib";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { SessionProvider } from "../modules/auth/SessionProvider";
+import { useAuthorizedHttp } from "../hooks/useAuthorizedHttp";
 
 function MyApp({ Component, pageProps }: AppProps) {
   useTopProgressBar();
+  useAuthorizedHttp();
 
   return (
     <>
