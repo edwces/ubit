@@ -3,7 +3,6 @@ import { requireAuthentication } from "../../middlewares/require-authentication.
 import { validateBody } from "../../middlewares/validate-body.middleware";
 import { validateQuery } from "../../middlewares/validate-query.middleware";
 import {
-  addVoteToPost,
   createPost,
   getAllPosts,
   checkVoting,
@@ -21,12 +20,6 @@ post.post(
   requireAuthentication,
   validateBody(postCreateSchema),
   createPost
-);
-post.post(
-  "/:id/vote",
-  requireAuthentication,
-  validateBody(postVoteSchema),
-  addVoteToPost
 );
 post.put(
   "/:id/vote",

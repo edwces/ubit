@@ -43,36 +43,6 @@ export async function createPost(request: Request, response: Response) {
   response.status(HttpStatus.CREATED).json({ success: true });
 }
 
-export async function addVoteToPost(request: Request, response: Response) {
-  const id = Number.parseInt(request.params.id);
-  const { type }: z.infer<typeof postVoteSchema> = request.body;
-
-  const post = await request.em.findOne(Post, id, { populate: ["author"] });
-  if (!post)
-    return response
-      .status(HttpStatus.NOT_FOUND)
-      .json({ message: "Post with that id does not exist" });
-
-  const newVoteData = { likes: post.likes!, dislikes: post.dislikes! };
-  if (type === PostVoteType.LIKE) {
-    newVoteData.likes += 1;
-  } else if (type === PostVoteType.DISLIKE) {
-    newVoteData.dislikes += 1;
-  }
-
-  wrap(post).assign(newVoteData);
-
-  const vote = request.em.create(PostVote, {
-    post: id,
-    voter: response.locals.user.id,
-    type,
-  });
-
-  await request.em.persistAndFlush(vote);
-
-  response.status(HttpStatus.CREATED).json({ post });
-}
-
 export async function checkVoting(request: Request, response: Response) {
   const id = Number.parseInt(request.params.id);
 
@@ -93,15 +63,17 @@ export async function updatePostVote(request: Request, response: Response) {
   const { type }: z.infer<typeof postVoteSchema> = request.body;
 
   const post = await request.em.findOne(Post, id);
-  const vote = await request.em.findOne(PostVote, {
+  let vote = await request.em.findOne(PostVote, {
     voter: response.locals.user.id,
     post: id,
   });
-  if (!vote)
-    return response
-      .status(HttpStatus.NOT_FOUND)
-      .json({ message: "Vote with that id does not exist" });
-
+  if (!vote) {
+    vote = request.em.create(PostVote, {
+      post: id,
+      voter: response.locals.user.id,
+      type: PostVoteType.NONE,
+    });
+  }
   const newVoteData = { likes: post!.likes!, dislikes: post!.dislikes! };
   if (vote.type === PostVoteType.LIKE) {
     newVoteData.likes -= 1;
@@ -114,12 +86,11 @@ export async function updatePostVote(request: Request, response: Response) {
   } else if (type === PostVoteType.DISLIKE) {
     newVoteData.dislikes += 1;
   }
-  console.log(newVoteData);
 
   wrap(post).assign(newVoteData);
   wrap(vote).assign({ type });
 
-  await request.em.flush();
+  await request.em.persistAndFlush([post, vote]);
 
   response.status(HttpStatus.OK).json({ post });
 }

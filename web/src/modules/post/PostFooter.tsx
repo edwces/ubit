@@ -9,7 +9,14 @@ interface PostFooterProps {
   dislikes: number;
   voteStatus?: PostVoteType;
 }
-
+// DESC:
+// if user is not logged In
+// DO: redirect to login on cliking LIKE or DISLIKE
+// else
+// if post has already been liked or disliked
+// DO: update vote mutation (cliking the same updates to none)
+// else
+// DO: create new vote with that value
 export function PostFooter({
   postId,
   likes,
