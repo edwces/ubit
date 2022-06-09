@@ -19,7 +19,11 @@ export function PostsList({ data = [] }: PostsListProps) {
             datePosted={post.createdAt}
           />
           <Text size="lg">{post.text}</Text>
-          <PostFooter postId={post.id} />
+          <PostFooter
+            postId={post.id}
+            dislikes={post.dislikes}
+            likes={post.likes}
+          />
         </PostLayout>
       ))}
     </Stack>

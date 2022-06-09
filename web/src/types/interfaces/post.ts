@@ -7,4 +7,6 @@ export interface Post {
   createdAt: string;
   updatedAt: string;
   author: User;
+  likes: number;
+  dislikes: number;
 }

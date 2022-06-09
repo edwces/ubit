@@ -1,4 +1,4 @@
-import { wrap } from "@mikro-orm/core";
+import { QueryOrder, wrap } from "@mikro-orm/core";
 import { Request, Response } from "express";
 import { z } from "zod";
 import { PostVote, PostVoteType } from "../../db/entities/post-vote.entity";
@@ -14,6 +14,7 @@ export async function getAllPosts(request: Request, response: Response) {
   const qb = request.em
     .createQueryBuilder(Post, "p")
     .select("p.*")
+    .orderBy({ createdAt: QueryOrder.DESC })
     .joinAndSelect("p.author", "a");
 
   if (limit) {
@@ -46,7 +47,7 @@ export async function addVoteToPost(request: Request, response: Response) {
   const id = Number.parseInt(request.params.id);
   const { type }: z.infer<typeof postVoteSchema> = request.body;
 
-  const post = await request.em.findOne(Post, id);
+  const post = await request.em.findOne(Post, id, { populate: ["author"] });
   if (!post)
     return response
       .status(HttpStatus.NOT_FOUND)
@@ -69,5 +70,5 @@ export async function addVoteToPost(request: Request, response: Response) {
 
   await request.em.persistAndFlush(vote);
 
-  response.status(HttpStatus.CREATED).json({ success: true });
+  response.status(HttpStatus.CREATED).json({ post });
 }

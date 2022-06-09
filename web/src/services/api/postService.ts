@@ -9,7 +9,10 @@ export function getPostsByPage({ pageParam = 0 }): Promise<Post[]> {
     .then((response) => response.data);
 }
 
-export function votePost(id: number, type: PostVoteType) {
+export function votePost(
+  id: number,
+  type: PostVoteType
+): Promise<{ post: Post }> {
   return http
     .post(`/posts/${id}/vote`, { type })
     .then((response) => response.data);
