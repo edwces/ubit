@@ -72,3 +72,18 @@ export async function addVoteToPost(request: Request, response: Response) {
 
   response.status(HttpStatus.CREATED).json({ post });
 }
+
+export async function checkVoting(request: Request, response: Response) {
+  const id = Number.parseInt(request.params.id);
+
+  const vote = await request.em.findOne(PostVote, {
+    voter: response.locals.user.id,
+    post: id,
+  });
+  if (!vote)
+    return response
+      .status(HttpStatus.NOT_FOUND)
+      .json({ message: "Vote with that ids was not found" });
+
+  response.status(HttpStatus.OK).json({ vote });
+}

@@ -3,6 +3,7 @@ import { votePost } from "../../../services/api/postService";
 import { PostVoteType } from "../../../types/enum";
 import { Post } from "../../../types/interfaces/post";
 
+// TODO: Use Query Inavlidation Instead ???
 export function useVoteMutation(type: PostVoteType) {
   const queryClient = useQueryClient();
   return useMutation(({ id }: { id: number }) => votePost(id, type), {
