@@ -7,6 +7,7 @@ import {
   createPost,
   getAllPosts,
   checkVoting,
+  updatePostVote,
 } from "./post.controller";
 import { postCreateSchema } from "./schemas/post-create.schema";
 import { postVoteSchema } from "./schemas/post-vote.schema";
@@ -26,5 +27,11 @@ post.post(
   requireAuthentication,
   validateBody(postVoteSchema),
   addVoteToPost
+);
+post.put(
+  "/:id/vote",
+  requireAuthentication,
+  validateBody(postVoteSchema),
+  updatePostVote
 );
 post.get("/:id/vote", requireAuthentication, checkVoting);

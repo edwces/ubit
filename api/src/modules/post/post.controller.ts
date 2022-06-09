@@ -87,3 +87,39 @@ export async function checkVoting(request: Request, response: Response) {
 
   response.status(HttpStatus.OK).json({ vote });
 }
+
+export async function updatePostVote(request: Request, response: Response) {
+  const id = Number.parseInt(request.params.id);
+  const { type }: z.infer<typeof postVoteSchema> = request.body;
+
+  const post = await request.em.findOne(Post, id);
+  const vote = await request.em.findOne(PostVote, {
+    voter: response.locals.user.id,
+    post: id,
+  });
+  if (!vote)
+    return response
+      .status(HttpStatus.NOT_FOUND)
+      .json({ message: "Vote with that id does not exist" });
+
+  const newVoteData = { likes: post!.likes!, dislikes: post!.dislikes! };
+  if (vote.type === PostVoteType.LIKE) {
+    newVoteData.likes -= 1;
+  } else if (vote.type === PostVoteType.DISLIKE) {
+    newVoteData.dislikes -= 1;
+  }
+
+  if (type === PostVoteType.LIKE) {
+    newVoteData.likes += 1;
+  } else if (type === PostVoteType.DISLIKE) {
+    newVoteData.dislikes += 1;
+  }
+  console.log(newVoteData);
+
+  wrap(post).assign(newVoteData);
+  wrap(vote).assign({ type });
+
+  await request.em.flush();
+
+  response.status(HttpStatus.OK).json({ post });
+}

@@ -7,9 +7,15 @@ interface PostFooterProps {
   postId: number;
   likes: number;
   dislikes: number;
+  voteStatus?: PostVoteType;
 }
 
-export function PostFooter({ postId, likes, dislikes }: PostFooterProps) {
+export function PostFooter({
+  postId,
+  likes,
+  dislikes,
+  voteStatus = PostVoteType.NONE,
+}: PostFooterProps) {
   const likeMutation = useVoteMutation(PostVoteType.LIKE);
   const dislikeMutation = useVoteMutation(PostVoteType.DISLIKE);
 
@@ -20,6 +26,7 @@ export function PostFooter({ postId, likes, dislikes }: PostFooterProps) {
           radius="xl"
           sx={(theme) => ({ "&:hover": { color: theme.colors.blue[6] } })}
           onClick={() => likeMutation.mutate({ id: postId })}
+          color={voteStatus === PostVoteType.LIKE ? "blue" : undefined}
         >
           <ThumbUp />
         </ActionIcon>
@@ -30,6 +37,7 @@ export function PostFooter({ postId, likes, dislikes }: PostFooterProps) {
           radius="xl"
           sx={(theme) => ({ "&:hover": { color: theme.colors.red[5] } })}
           onClick={() => dislikeMutation.mutate({ id: postId })}
+          color={voteStatus === PostVoteType.DISLIKE ? "red" : undefined}
         >
           <ThumbDown />
         </ActionIcon>
