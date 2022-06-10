@@ -12,8 +12,9 @@ import { postsSchema } from "./schemas/posts.schema";
 export async function getAllPosts(request: Request, response: Response) {
   const { limit = 20, offset = 0 }: z.infer<typeof postsSchema> =
     request.query as any;
+
   const connection = request.em.getConnection();
-  const query = `SELECT "t".*, to_json("a".*) as "author", CASE WHEN "v".type IS NULL THEN 0 ELSE "v".type END AS voteStatus FROM post as "t"
+  const query = `SELECT "t".*, "t".created_at as "createdAt", to_json("a".*) as "author", CASE WHEN "v".type IS NULL THEN 0 ELSE "v".type END AS "votestatus" FROM post as "t"
                  JOIN "user" as "a" ON "a".id = "t".author_id
                  LEFT JOIN post_vote as "v" ON "v".post_id = "t".id AND "v".voter_id = ?
                  ORDER BY "t".id OFFSET ? LIMIT ?`;
@@ -22,6 +23,7 @@ export async function getAllPosts(request: Request, response: Response) {
     offset,
     limit,
   ]);
+
   response.status(HttpStatus.OK).json(posts);
 }
 
