@@ -14,7 +14,7 @@ import { postsSchema } from "./schemas/posts.schema";
 
 export const post = Router();
 
-post.get("/", validateQuery(postsSchema), getAllPosts);
+post.get("/", requireAuthentication, validateQuery(postsSchema), getAllPosts);
 post.post(
   "/",
   requireAuthentication,

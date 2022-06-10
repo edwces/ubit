@@ -1,4 +1,4 @@
-import { QueryOrder, wrap } from "@mikro-orm/core";
+import { wrap } from "@mikro-orm/core";
 import { Request, Response } from "express";
 import { z } from "zod";
 import { PostVote, PostVoteType } from "../../db/entities/post-vote.entity";
@@ -10,21 +10,18 @@ import { postVoteSchema } from "./schemas/post-vote.schema";
 import { postsSchema } from "./schemas/posts.schema";
 
 export async function getAllPosts(request: Request, response: Response) {
-  const { limit, offset }: z.infer<typeof postsSchema> = request.query as any;
-  const qb = request.em
-    .createQueryBuilder(Post, "p")
-    .select("p.*")
-    .orderBy({ createdAt: QueryOrder.DESC })
-    .joinAndSelect("p.author", "a");
-
-  if (limit) {
-    qb.limit(limit);
-  }
-  if (offset) {
-    qb.offset(offset);
-  }
-  const posts = await qb.getResult();
-
+  const { limit = 20, offset = 0 }: z.infer<typeof postsSchema> =
+    request.query as any;
+  const connection = request.em.getConnection();
+  const query = `SELECT "t".*, to_json("a".*) as "author", CASE WHEN "v".type IS NULL THEN 0 ELSE "v".type END AS voteStatus FROM post as "t"
+                 JOIN "user" as "a" ON "a".id = "t".author_id
+                 LEFT JOIN post_vote as "v" ON "v".post_id = "t".id AND "v".voter_id = ?
+                 ORDER BY "t".id OFFSET ? LIMIT ?`;
+  const posts = await connection.execute(query, [
+    response.locals.user.id,
+    offset,
+    limit,
+  ]);
   response.status(HttpStatus.OK).json(posts);
 }
 
@@ -62,7 +59,7 @@ export async function updatePostVote(request: Request, response: Response) {
   const id = Number.parseInt(request.params.id);
   const { type }: z.infer<typeof postVoteSchema> = request.body;
 
-  const post = await request.em.findOne(Post, id);
+  const post = await request.em.findOne(Post, id, { populate: ["author"] });
   let vote = await request.em.findOne(PostVote, {
     voter: response.locals.user.id,
     post: id,

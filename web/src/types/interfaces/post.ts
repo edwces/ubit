@@ -1,3 +1,4 @@
+import { PostVoteType } from "../enum";
 import { User } from "./user";
 
 export interface Post {
@@ -9,4 +10,5 @@ export interface Post {
   author: User;
   likes: number;
   dislikes: number;
+  votestatus: PostVoteType;
 }

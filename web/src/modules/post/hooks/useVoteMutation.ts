@@ -14,7 +14,9 @@ export function useVoteMutation(type: PostVoteType) {
         const newData = {
           pages: old?.pages.map((page) => {
             return page.map((post) =>
-              post.id == updatedPost!.post.id ? updatedPost.post : post
+              post.id == updatedPost!.post.id
+                ? { ...updatedPost.post, votestatus: type }
+                : post
             );
           }),
           pageParams: old?.pageParams,

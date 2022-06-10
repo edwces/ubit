@@ -14,7 +14,7 @@ export function votePost(
   type: PostVoteType
 ): Promise<{ post: Post }> {
   return http
-    .post(`/posts/${id}/vote`, { type })
+    .put(`/posts/${id}/vote`, { type })
     .then((response) => response.data);
 }
 

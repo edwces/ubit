@@ -23,6 +23,7 @@ export function PostsList({ data = [] }: PostsListProps) {
             postId={post.id}
             dislikes={post.dislikes}
             likes={post.likes}
+            voteStatus={post.votestatus}
           />
         </PostLayout>
       ))}
