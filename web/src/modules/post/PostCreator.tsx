@@ -13,7 +13,7 @@ import { Photo } from "tabler-icons-react";
 import { useSession } from "../../stores/useSession";
 import { useCreatePostMutation } from "./hooks/useCreatePostMutation";
 
-export default function PostCreator() {
+export function PostCreator() {
   const mutation = useCreatePostMutation();
   const data = useSession((state) => state.data);
   const status = useSession((state) => state.status);
@@ -21,7 +21,7 @@ export default function PostCreator() {
 
   if (status === "signIn")
     return (
-      <Paper component="article" withBorder p={10} sx={{ width: "400px" }}>
+      <Paper component="article" withBorder p={10}>
         <Stack spacing={20}>
           <Group position="apart">
             <Group spacing={15}>

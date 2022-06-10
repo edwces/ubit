@@ -1,13 +1,16 @@
+import { Center, Stack } from "@mantine/core";
 import type { NextPage } from "next";
 import { MainLayout } from "../modules/layout";
 import { FeedScrollArea } from "../modules/post/FeedScrollArea";
-import PostCreator from "../modules/post/PostCreator";
 
 const Home: NextPage = () => {
   return (
     <MainLayout>
-      <PostCreator />
-      <FeedScrollArea />
+      <Center>
+        <Stack spacing={25}>
+          <FeedScrollArea />
+        </Stack>
+      </Center>
     </MainLayout>
   );
 };

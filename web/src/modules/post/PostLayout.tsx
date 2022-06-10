@@ -7,7 +7,7 @@ interface PostLayoutProps {
 
 export function PostLayout({ children }: PostLayoutProps) {
   return (
-    <Paper component="article" withBorder p={10} sx={{ width: "400px" }}>
+    <Paper component="article" withBorder p={10}>
       <Stack spacing={20}>{children}</Stack>
     </Paper>
   );
