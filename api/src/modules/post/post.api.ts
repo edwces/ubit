@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authenticaticate } from "../../middlewares/authenticate.middleware";
 import { requireAuthentication } from "../../middlewares/require-authentication.middleware";
 import { validateBody } from "../../middlewares/validate-body.middleware";
 import { validateQuery } from "../../middlewares/validate-query.middleware";
@@ -14,7 +15,7 @@ import { postsSchema } from "./schemas/posts.schema";
 
 export const post = Router();
 
-post.get("/", requireAuthentication, validateQuery(postsSchema), getAllPosts);
+post.get("/", authenticaticate, validateQuery(postsSchema), getAllPosts);
 post.post(
   "/",
   requireAuthentication,
