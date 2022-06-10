@@ -25,6 +25,7 @@ export function PostFooter({
 }: PostFooterProps) {
   const likeMutation = useVoteMutation(PostVoteType.LIKE);
   const dislikeMutation = useVoteMutation(PostVoteType.DISLIKE);
+  const unvoteMutation = useVoteMutation(PostVoteType.NONE);
 
   return (
     <Group position="apart" px={30}>
@@ -32,7 +33,11 @@ export function PostFooter({
         <ActionIcon
           radius="xl"
           sx={(theme) => ({ "&:hover": { color: theme.colors.blue[6] } })}
-          onClick={() => likeMutation.mutate({ id: postId })}
+          onClick={() =>
+            voteStatus === PostVoteType.LIKE
+              ? unvoteMutation.mutate({ id: postId })
+              : likeMutation.mutate({ id: postId })
+          }
           color={voteStatus === PostVoteType.LIKE ? "blue" : undefined}
         >
           <ThumbUp />
@@ -43,7 +48,11 @@ export function PostFooter({
         <ActionIcon
           radius="xl"
           sx={(theme) => ({ "&:hover": { color: theme.colors.red[5] } })}
-          onClick={() => dislikeMutation.mutate({ id: postId })}
+          onClick={() =>
+            voteStatus === PostVoteType.DISLIKE
+              ? unvoteMutation.mutate({ id: postId })
+              : dislikeMutation.mutate({ id: postId })
+          }
           color={voteStatus === PostVoteType.DISLIKE ? "red" : undefined}
         >
           <ThumbDown />
