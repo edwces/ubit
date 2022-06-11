@@ -1,9 +1,13 @@
 import Head from "next/head";
 
-export function AppMetadata() {
+interface AppMetadataProps {
+  title: string;
+}
+
+export function AppMetadata({ title }: AppMetadataProps) {
   return (
     <Head>
-      <title>Webso</title>
+      <title>{title}</title>
       <meta name="description" content="Social Media" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
