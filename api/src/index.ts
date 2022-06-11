@@ -6,9 +6,16 @@ import { EntityManager } from "@mikro-orm/postgresql";
 import { auth } from "./modules/auth";
 import { post } from "./modules/post";
 import { user } from "./modules/user";
+import cloudinary from "cloudinary";
 
 const bootstrap = async () => {
   const orm = await MikroORM.init(mikroORMConfig);
+
+  cloudinary.v2.config({
+    cloud_name: environment.CLOUDINARY_NAME,
+    api_key: environment.CLOUDINARY_API_KEY,
+    api_secret: environment.CLOUDINARY_API_SECRET,
+  });
 
   app.use((request: Request, _: Response, next: NextFunction) => {
     RequestContext.create(orm.em, () => {

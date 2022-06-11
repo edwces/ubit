@@ -1,5 +1,6 @@
 import {
   Collection,
+  Embedded,
   Entity,
   Enum,
   OneToMany,
@@ -8,6 +9,7 @@ import {
   Unique,
 } from "@mikro-orm/core";
 import { CustomBaseEntity } from "./base.entity";
+import { AvatarImage } from "./avatar-image.entity";
 import { Post } from "./post.entity";
 
 @Entity()
@@ -28,8 +30,8 @@ export class User extends CustomBaseEntity {
   @Enum(() => UserRole)
   role? = UserRole.USER;
 
-  @Property()
-  avatar?: string = "";
+  @Embedded(() => AvatarImage)
+  avatar? = new AvatarImage();
 
   @OneToMany(() => Post, (post) => post.author)
   posts = new Collection<Post>(this);

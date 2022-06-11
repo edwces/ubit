@@ -17,6 +17,9 @@ const schema = z.object({
     .transform((value) => value === "true"),
   JWT_ACCESS_SECRET: z.string(),
   JWT_REFRESH_SECRET: z.string(),
+  CLOUDINARY_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 });
 
 const result = schema.parse(process.env);
