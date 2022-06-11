@@ -19,6 +19,7 @@ export const useSession = create<SessionStore>((set) => ({
     user: {
       id: null,
       email: null,
+      name: null,
     },
   },
   status: "idle",
