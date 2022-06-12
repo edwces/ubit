@@ -10,5 +10,5 @@ export interface Post {
   author: User;
   likes: number;
   dislikes: number;
-  votestatus: PostVoteType;
+  voteStatus: PostVoteType;
 }

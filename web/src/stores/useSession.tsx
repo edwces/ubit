@@ -27,7 +27,7 @@ export const useSession = create<SessionStore>((set) => ({
   setSignedIn: (data, token) => set({ status: "signIn", data, token }),
   setSignedOut: () =>
     set({
-      data: { user: { id: null, email: null } },
+      data: { user: { id: null, email: null, name: null } },
       status: "signOut",
       token: null,
     }),
