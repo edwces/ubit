@@ -15,3 +15,9 @@ export function refreshToken() {
     .get("/auth/token", { withCredentials: true })
     .then((response) => response.data);
 }
+
+export function logout() {
+  return http
+    .post("/auth/logout", {}, { withCredentials: true })
+    .then((response) => response.data);
+}

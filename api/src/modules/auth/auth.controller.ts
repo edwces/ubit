@@ -89,3 +89,8 @@ export async function getNewToken(request: Request, response: Response) {
 
   response.status(HttpStatus.OK).json({ token: accessToken, user });
 }
+
+export async function removeRefreshToken(request: Request, response: Response) {
+  response.clearCookie("refresh_token");
+  response.status(HttpStatus.OK).json({ success: true });
+}

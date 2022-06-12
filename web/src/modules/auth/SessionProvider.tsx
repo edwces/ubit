@@ -24,7 +24,6 @@ export function SessionProvider({ children }: SessionProviderProps) {
       .catch(() => {
         setSignedOut();
         setLoading(false);
-        router.push("/account/login");
       });
   }, []);
 

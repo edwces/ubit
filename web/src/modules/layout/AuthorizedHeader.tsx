@@ -2,16 +2,18 @@ import { Avatar, Group, Header, Menu, Title } from "@mantine/core";
 import { useRouter } from "next/router";
 import { Logout, User } from "tabler-icons-react";
 import { useSession } from "../../stores/useSession";
+import { useLogoutMutation } from "../auth/hooks/useLogoutMutation";
 
 export function AuthorizedHeader() {
   const setSignedOut = useSession((state) => state.setSignedOut);
   const user = useSession((state) => state.data.user);
   const router = useRouter();
-
-  const logout = () => {
-    setSignedOut();
-    router.push("/");
-  };
+  const mutation = useLogoutMutation({
+    onSuccess: () => {
+      setSignedOut();
+      router.reload();
+    },
+  });
 
   const goToProfile = () => {
     router.push(`/account/${user.id}/${user.name}`);
@@ -36,7 +38,7 @@ export function AuthorizedHeader() {
               },
             }}
           >
-            <Menu.Item icon={<Logout />} onClick={logout}>
+            <Menu.Item icon={<Logout />} onClick={() => mutation.mutate()}>
               Logout
             </Menu.Item>
             <Menu.Item icon={<User />} onClick={goToProfile}>
