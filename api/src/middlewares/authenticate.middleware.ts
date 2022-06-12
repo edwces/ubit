@@ -7,7 +7,7 @@ export async function authenticaticate(
   response: Response,
   next: NextFunction
 ) {
-  response.locals.isAuthenticated = true;
+  response.locals.isAuthenticated = false;
   const authorization = request.headers["authorization"];
   if (!authorization) return next();
   const token = authorization?.split(" ")[1];
@@ -17,7 +17,7 @@ export async function authenticaticate(
       token!,
       environment.JWT_ACCESS_SECRET
     ) as JwtPayload;
-    response.locals.isAuthenticated = false;
+    response.locals.isAuthenticated = true;
     response.locals.user = decoded.user;
     next();
   } catch {

@@ -30,6 +30,9 @@ export class Post extends CustomBaseEntity {
   @Property()
   dislikes?: number = 0;
 
+  @Property({ persist: false })
+  voteStatus?: number = 0;
+
   @ManyToOne(() => User)
   author!: User;
 }

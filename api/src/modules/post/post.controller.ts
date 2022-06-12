@@ -10,21 +10,31 @@ import { postVoteSchema } from "./schemas/post-vote.schema";
 import { postsSchema } from "./schemas/posts.schema";
 
 export async function getAllPosts(request: Request, response: Response) {
-  const { limit = 20, offset = 0 }: z.infer<typeof postsSchema> =
-    request.query as any;
+  const { limit, offset }: z.infer<typeof postsSchema> = request.query as any;
 
-  const connection = request.em.getConnection();
-  const query = `SELECT "t".*, "t".created_at as "createdAt", to_json("a".*) as "author", CASE WHEN "v".type IS NULL THEN 0 ELSE "v".type END AS "votestatus" FROM post as "t"
-                 JOIN "user" as "a" ON "a".id = "t".author_id
-                 LEFT JOIN post_vote as "v" ON "v".post_id = "t".id AND "v".voter_id = ?
-                 ORDER BY "t".id OFFSET ? LIMIT ?`;
-  const posts = await connection.execute(query, [
-    response.locals.user.id,
-    offset,
-    limit,
-  ]);
+  const qb = request.em.createQueryBuilder(Post, "p");
 
-  response.status(HttpStatus.OK).json(posts);
+  qb.select(["p.*"]).joinAndSelect("p.author", "a", {});
+
+  if (response.locals.isAuthenticated)
+    qb.leftJoin("p.votes", "v", {
+      "v.voter": { $eq: response.locals.user.id },
+    }).addSelect(
+      qb.raw(`CASE WHEN "v".type IS NULL THEN 0 ELSE "v".type END AS "type"`)
+    );
+
+  if (limit) qb.limit(limit);
+
+  if (offset) qb.offset(offset);
+
+  const raw = await qb.execute("all");
+  const result = raw.map((data: any) => {
+    const newData = request.em.map(Post, data);
+    newData.voteStatus = data.type ?? 0;
+    return newData;
+  });
+
+  response.status(HttpStatus.OK).json(result);
 }
 
 export async function createPost(request: Request, response: Response) {
