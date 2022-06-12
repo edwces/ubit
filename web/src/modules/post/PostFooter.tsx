@@ -1,5 +1,6 @@
 import { ActionIcon, Group, Text } from "@mantine/core";
 import { ThumbDown, ThumbUp } from "tabler-icons-react";
+import { useSession } from "../../stores/useSession";
 import { PostVoteType } from "../../types/enum";
 import { useVoteMutation } from "./hooks/useVoteMutation";
 
@@ -26,6 +27,21 @@ export function PostFooter({
   const likeMutation = useVoteMutation(PostVoteType.LIKE);
   const dislikeMutation = useVoteMutation(PostVoteType.DISLIKE);
   const unvoteMutation = useVoteMutation(PostVoteType.NONE);
+  const status = useSession((state) => state.status);
+
+  const onLike = () => {
+    if (status !== "signIn") return;
+    return voteStatus === PostVoteType.LIKE
+      ? unvoteMutation.mutate({ id: postId })
+      : likeMutation.mutate({ id: postId });
+  };
+
+  const onDislike = () => {
+    if (status !== "signIn") return;
+    return voteStatus === PostVoteType.DISLIKE
+      ? unvoteMutation.mutate({ id: postId })
+      : dislikeMutation.mutate({ id: postId });
+  };
 
   return (
     <Group position="apart" px={30}>
@@ -33,11 +49,7 @@ export function PostFooter({
         <ActionIcon
           radius="xl"
           sx={(theme) => ({ "&:hover": { color: theme.colors.blue[6] } })}
-          onClick={() =>
-            voteStatus === PostVoteType.LIKE
-              ? unvoteMutation.mutate({ id: postId })
-              : likeMutation.mutate({ id: postId })
-          }
+          onClick={onLike}
           color={voteStatus === PostVoteType.LIKE ? "blue" : undefined}
         >
           <ThumbUp />
@@ -48,11 +60,7 @@ export function PostFooter({
         <ActionIcon
           radius="xl"
           sx={(theme) => ({ "&:hover": { color: theme.colors.red[5] } })}
-          onClick={() =>
-            voteStatus === PostVoteType.DISLIKE
-              ? unvoteMutation.mutate({ id: postId })
-              : dislikeMutation.mutate({ id: postId })
-          }
+          onClick={onDislike}
           color={voteStatus === PostVoteType.DISLIKE ? "red" : undefined}
         >
           <ThumbDown />
