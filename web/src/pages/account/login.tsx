@@ -12,7 +12,7 @@ const Login: NextPage = () => {
   const setSignedIn = useSession((state) => state.setSignedIn);
   const mutation = useLoginMutation({
     onSuccess: (data) => {
-      setSignedIn(data.user, data.token);
+      setSignedIn({ user: data.user }, data.token);
       router.push("/");
     },
   });

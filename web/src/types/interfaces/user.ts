@@ -1,7 +1,13 @@
+export interface UserAvatar {
+  path: string;
+  name: string;
+  url: string;
+}
+
 export interface User {
   id: number;
   name: string;
   email: string;
-  avatar: string | null;
+  avatar: UserAvatar;
   role: number;
 }
