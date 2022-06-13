@@ -1,7 +1,6 @@
 import { wrap } from "@mikro-orm/core";
 import cloudinary from "cloudinary";
 import { Request, Response } from "express";
-import { environment } from "../../config";
 import { User } from "../../db/entities/user.entity";
 import { HttpStatus } from "../../types/interfaces";
 
