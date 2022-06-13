@@ -1,14 +1,14 @@
 import { ActionIcon, Group, Text } from "@mantine/core";
 import { ThumbDown, ThumbUp } from "tabler-icons-react";
-import { useSession } from "../../stores/useSession";
 import { PostVoteType } from "../../types/enum";
-import { useVoteMutation } from "./hooks/useVoteMutation";
 
 interface PostFooterProps {
   postId: number;
   likes: number;
   dislikes: number;
   voteStatus?: PostVoteType;
+  onLike: () => void;
+  onDislike: () => void;
 }
 // DESC:
 // if user is not logged In
@@ -19,30 +19,12 @@ interface PostFooterProps {
 // else
 // DO: create new vote with that value
 export function PostFooter({
-  postId,
   likes,
   dislikes,
   voteStatus = PostVoteType.NONE,
+  onLike,
+  onDislike,
 }: PostFooterProps) {
-  const likeMutation = useVoteMutation(PostVoteType.LIKE);
-  const dislikeMutation = useVoteMutation(PostVoteType.DISLIKE);
-  const unvoteMutation = useVoteMutation(PostVoteType.NONE);
-  const status = useSession((state) => state.status);
-
-  const onLike = () => {
-    if (status !== "signIn") return;
-    return voteStatus === PostVoteType.LIKE
-      ? unvoteMutation.mutate({ id: postId })
-      : likeMutation.mutate({ id: postId });
-  };
-
-  const onDislike = () => {
-    if (status !== "signIn") return;
-    return voteStatus === PostVoteType.DISLIKE
-      ? unvoteMutation.mutate({ id: postId })
-      : dislikeMutation.mutate({ id: postId });
-  };
-
   return (
     <Group position="apart" px={30}>
       <Group spacing={10}>

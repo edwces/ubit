@@ -4,26 +4,29 @@ import { PostVoteType } from "../../../types/enum";
 import { Post } from "../../../types/interfaces/post";
 
 // TODO: Use Query Inavlidation Instead ???
-export function useVoteMutation(type: PostVoteType) {
+export function useVoteMutation() {
   const queryClient = useQueryClient();
-  return useMutation(({ id }: { id: number }) => votePost(id, type), {
-    onSuccess: (updatedPost) => {
-      console.log(updatedPost);
+  return useMutation(
+    ({ id, type }: { id: number; type: PostVoteType }) => votePost(id, type),
+    {
+      onSuccess: (updatedPost, { type }) => {
+        console.log(updatedPost);
 
-      queryClient.setQueryData<InfiniteData<Post[]>>("posts", (old) => {
-        const newData = {
-          pages: old?.pages.map((page) => {
-            return page.map((post) =>
-              post.id == updatedPost!.post.id
-                ? { ...updatedPost.post, voteStatus: type }
-                : post
-            );
-          }),
-          pageParams: old?.pageParams,
-        } as InfiniteData<Post[]>;
-        console.log(newData);
-        return newData;
-      });
-    },
-  });
+        queryClient.setQueryData<InfiniteData<Post[]>>("posts", (old) => {
+          const newData = {
+            pages: old?.pages.map((page) => {
+              return page.map((post) =>
+                post.id == updatedPost!.post.id
+                  ? { ...updatedPost.post, voteStatus: type }
+                  : post
+              );
+            }),
+            pageParams: old?.pageParams,
+          } as InfiniteData<Post[]>;
+          console.log(newData);
+          return newData;
+        });
+      },
+    }
+  );
 }
