@@ -15,7 +15,7 @@ export function PostsList({ data = [] }: PostsListProps) {
         <PostLayout key={post.id}>
           <PostHeader
             userName={post.author.name}
-            avatarUrl="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"
+            avatarUrl={post.author.avatar.url}
             datePosted={post.createdAt}
           />
           <Text size="lg">{post.text}</Text>

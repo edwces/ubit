@@ -12,3 +12,11 @@ export function changeAvatar(data: FormData, token: string) {
 export function getUserProfile(id: number): Promise<User> {
   return http.get(`/profiles/${id}`).then((response) => response.data);
 }
+
+export function getProfilePosts(id: number, pageParam = 0) {
+  return http
+    .get(`profiles/${id}/posts`, {
+      params: { limit: 20, offset: 20 * pageParam },
+    })
+    .then((response) => response.data);
+}

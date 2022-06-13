@@ -34,14 +34,14 @@ export class User extends CustomBaseEntity {
   role? = UserRole.USER;
 
   @Embedded(() => AvatarImage)
-  avatar = new AvatarImage();
+  avatar? = new AvatarImage();
 
   @OneToMany(() => Post, (post) => post.author)
   posts = new Collection<Post>(this);
 
   toJSON(strip = ["password"], ...args: any[]) {
     const o = wrap<User>(this, true).toObject(...args) as EntityDTO<User>;
-    o.avatar.url = `${environment.MEDIA_URL}${o.avatar.path}`;
+    o.avatar!.url = `${environment.MEDIA_URL}${o.avatar!.path}`;
 
     return o;
   }
