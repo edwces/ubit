@@ -38,15 +38,20 @@ export async function getAllPosts(request: Request, response: Response) {
 }
 
 export async function createPost(request: Request, response: Response) {
-  const { authorId, text }: z.infer<typeof postCreateSchema> = request.body;
+  const { text }: z.infer<typeof postCreateSchema> = request.body;
 
-  const doesUserExist = await request.em.count(User, { id: authorId });
+  const doesUserExist = await request.em.count(User, {
+    id: response.locals.user.id,
+  });
   if (!doesUserExist)
     return response
       .status(HttpStatus.BAD_REQUEST)
       .send({ message: "This author does not exist" });
 
-  const post = request.em.create(Post, { author: authorId, text });
+  const post = request.em.create(Post, {
+    author: response.locals.user.id,
+    text,
+  });
   await request.em.persistAndFlush(post);
 
   response.status(HttpStatus.CREATED).json({ success: true });
