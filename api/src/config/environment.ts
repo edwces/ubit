@@ -20,6 +20,7 @@ const schema = z.object({
   CLOUDINARY_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),
   CLOUDINARY_API_SECRET: z.string(),
+  MEDIA_URL: z.string().url(),
 });
 
 const result = schema.parse(process.env);

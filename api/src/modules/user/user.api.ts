@@ -16,10 +16,11 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary.v2,
   params: (request: Request, file) => {
     const salt = Date.now();
-    const filename = `${file.originalname}-${salt}`;
+    const filename = encodeURI(file.originalname);
+    const id = `${filename}-${salt}`;
     return {
       folder: "assets",
-      public_id: filename,
+      public_id: id,
       format: "png",
       width: 128,
       height: 128,
