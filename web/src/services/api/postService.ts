@@ -5,7 +5,7 @@ import { PostRequestBody } from "../../types/interfaces/postRequestBody";
 
 export function getPostsByPage({ pageParam = 0 }): Promise<Post[]> {
   return http
-    .get("/posts", { params: { limit: 20, offset: 20 * pageParam } })
+    .get("/posts", { params: { limit: 5, offset: 5 * pageParam } })
     .then((response) => response.data);
 }
 
