@@ -1,7 +1,6 @@
 import { http } from "../../lib";
 import { PostVoteType } from "../../types/enum";
 import { Post } from "../../types/interfaces/post";
-import { PostRequestBody } from "../../types/interfaces/postRequestBody";
 
 export function getPostsByPage({ pageParam = 0 }): Promise<Post[]> {
   return http
@@ -18,6 +17,10 @@ export function votePost(
     .then((response) => response.data);
 }
 
-export function createPost(data: PostRequestBody) {
-  return http.post("/posts", data).then((response) => response.data);
+export function createPost(data: FormData, token: string) {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
+    method: "POST",
+    body: data,
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((response) => response.json());
 }
