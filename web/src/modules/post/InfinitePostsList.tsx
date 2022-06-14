@@ -1,7 +1,7 @@
 import { Button, Stack } from "@mantine/core";
 import { InfiniteData } from "react-query";
 import { Post } from "../../types/interfaces/post";
-import { PostContainer } from "./PostContainer";
+import { PostContainer } from "./PostCard/PostContainer";
 
 interface InfinitePostsListProps {
   data: InfiniteData<Post[]>;

@@ -1,6 +1,6 @@
 import { ActionIcon, Group, Text } from "@mantine/core";
 import { ThumbDown, ThumbUp } from "tabler-icons-react";
-import { PostVoteType } from "../../types/enum";
+import { PostVoteType } from "../../../types/enum";
 
 interface PostFooterProps {
   likes: number;

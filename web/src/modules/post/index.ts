@@ -1,3 +1,3 @@
-export { PostHeader } from "./PostHeader";
-export { PostFooter } from "./PostFooter";
-export { PostLayout } from "./PostLayout";
+export { PostHeader } from "./PostCard/PostHeader";
+export { PostFooter } from "./PostCard/PostFooter";
+export { PostLayout } from "./PostCard/PostLayout";

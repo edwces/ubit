@@ -1,7 +1,7 @@
-import { useSession } from "../../stores/useSession";
-import { PostVoteType } from "../../types/enum";
-import { Post } from "../../types/interfaces/post";
-import { useVoteMutation } from "./hooks/useVoteMutation";
+import { useSession } from "../../../stores/useSession";
+import { PostVoteType } from "../../../types/enum";
+import { Post } from "../../../types/interfaces/post";
+import { useVoteMutation } from "../hooks/useVoteMutation";
 import { PostFooter } from "./PostFooter";
 import { PostHeader } from "./PostHeader";
 import { PostLayout } from "./PostLayout";
@@ -38,7 +38,6 @@ export function PostContainer({ post }: PostContainerProps) {
       />
       <Text size="lg">{post.text}</Text>
       <PostFooter
-        postId={post.id}
         dislikes={post.dislikes}
         likes={post.likes}
         voteStatus={post.voteStatus}
