@@ -3,12 +3,11 @@ import { ThumbDown, ThumbUp } from "tabler-icons-react";
 import { PostVoteType } from "../../types/enum";
 
 interface PostFooterProps {
-  postId: number;
   likes: number;
   dislikes: number;
   voteStatus?: PostVoteType;
-  onLike: () => void;
-  onDislike: () => void;
+  onLike?: () => void;
+  onDislike?: () => void;
 }
 // DESC:
 // if user is not logged In
