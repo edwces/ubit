@@ -1,12 +1,12 @@
 import { Embeddable, Property } from "@mikro-orm/core";
 
 @Embeddable()
-export class AvatarImage {
+export class PostImage {
   @Property()
-  name: string = "default.png";
+  name!: string;
 
   @Property()
-  path: string = "default-avatar_cltc4f";
+  path!: string;
 
   @Property({ persist: false })
   url!: string;

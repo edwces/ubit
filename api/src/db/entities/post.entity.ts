@@ -1,12 +1,17 @@
 import {
   Collection,
+  Embedded,
   Entity,
+  EntityDTO,
   ManyToOne,
   OneToMany,
   PrimaryKey,
   Property,
+  wrap,
 } from "@mikro-orm/core";
+import { environment } from "../../config";
 import { CustomBaseEntity } from "./base.entity";
+import { PostImage } from "./post-image.entity";
 import { PostVote } from "./post-vote.entity";
 import { User } from "./user.entity";
 
@@ -18,8 +23,8 @@ export class Post extends CustomBaseEntity {
   @Property({ columnType: "text", nullable: true })
   text?: string;
 
-  @Property({ nullable: true })
-  media?: string;
+  @Embedded(() => PostImage, { nullable: true })
+  media?: PostImage;
 
   @OneToMany(() => PostVote, (postVote) => postVote.post)
   votes = new Collection<PostVote>(this);
@@ -35,4 +40,12 @@ export class Post extends CustomBaseEntity {
 
   @ManyToOne(() => User)
   author!: User;
+
+  toJSON(strip = [], ...args: any[]) {
+    const o = wrap<Post>(this, true).toObject(...args) as EntityDTO<Post>;
+    if (this.media) {
+      o.media!.url = `${environment.MEDIA_URL}${o.media!.path}`;
+    }
+    return o;
+  }
 }

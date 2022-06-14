@@ -51,6 +51,10 @@ export async function createPost(request: Request, response: Response) {
   const post = request.em.create(Post, {
     author: response.locals.user.id,
     text,
+    media: {
+      path: request.file?.filename,
+      name: request.file?.originalname,
+    },
   });
   await request.em.persistAndFlush(post);
 
