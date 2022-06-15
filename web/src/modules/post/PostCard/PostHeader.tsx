@@ -1,7 +1,10 @@
-import { Avatar, Group, Stack, Text } from "@mantine/core";
+import { Anchor, Avatar, Group, Stack, Text } from "@mantine/core";
+import { NextLink } from "@mantine/next";
+import Link from "next/link";
 
 interface PostHeaderProps {
   userName: string;
+  userId: number;
   avatarUrl: string;
   datePosted: string;
 }
@@ -10,15 +13,23 @@ export function PostHeader({
   userName,
   avatarUrl,
   datePosted,
+  userId,
 }: PostHeaderProps) {
   return (
     <Group position="apart">
       <Group spacing={15}>
-        <Avatar radius="xl" size="lg" src={avatarUrl} />
+        <Link href={`/account/${userId}/${userName}`} passHref>
+          <Avatar radius="xl" size="lg" src={avatarUrl} />
+        </Link>
         <Stack spacing={0}>
-          <Text size="lg" weight={500}>
+          <Anchor
+            size="lg"
+            weight={500}
+            component={NextLink}
+            href={`/account/${userId}/${userName}`}
+          >
             {userName}
-          </Text>
+          </Anchor>
           <Text color="dimmed" size="sm">
             {datePosted}
           </Text>

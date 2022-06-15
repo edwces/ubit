@@ -33,6 +33,7 @@ export function PostContainer({ post }: PostContainerProps) {
   return (
     <PostLayout>
       <PostHeader
+        userId={post.author.id}
         userName={post.author.name}
         avatarUrl={post.author.avatar.url}
         datePosted={post.createdAt}
