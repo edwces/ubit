@@ -3,7 +3,11 @@ import { environment } from "./environment";
 
 const mikroORMConfig = {
   type: "postgresql",
-  clientUrl: environment.DB_URL,
+  host: environment.DB_HOST,
+  port: environment.DB_PORT,
+  user: environment.DB_USER,
+  password: environment.DB_PASSWORD,
+  dbName: environment.DB_NAME,
   debug: environment.DB_DEBUG,
   entities: ["dist/**/*.entity.js"],
   entitiesTs: ["src/**/*.entity.ts"],

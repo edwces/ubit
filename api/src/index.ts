@@ -8,8 +8,14 @@ import { post } from "./modules/post";
 import { user } from "./modules/user";
 import cloudinary from "cloudinary";
 import { profile } from "./modules/profile";
+import waitPort from "wait-port";
 
 const bootstrap = async () => {
+  await waitPort({
+    host: environment.DB_HOST,
+    port: environment.DB_PORT,
+    timeout: 1000 * 10,
+  });
   const orm = await MikroORM.init(mikroORMConfig);
 
   cloudinary.v2.config({
