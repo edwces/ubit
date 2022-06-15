@@ -6,6 +6,7 @@ import { PostFooter } from "./PostFooter";
 import { PostHeader } from "./PostHeader";
 import { PostLayout } from "./PostLayout";
 import { Text } from "@mantine/core";
+import Image from "next/image";
 
 interface PostContainerProps {
   post: Post;
@@ -37,6 +38,7 @@ export function PostContainer({ post }: PostContainerProps) {
         datePosted={post.createdAt}
       />
       <Text size="lg">{post.text}</Text>
+      {post.media && <Image src={post.media.url} width={400} height={400} />}
       <PostFooter
         dislikes={post.dislikes}
         likes={post.likes}

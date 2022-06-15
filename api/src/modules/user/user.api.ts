@@ -2,7 +2,7 @@ import { Router } from "express";
 import { UserRole } from "../../db/entities/user.entity";
 import { requireAuthentication } from "../../middlewares/require-authentication.middleware";
 import { requireRole } from "../../middlewares/require-role.middleware";
-import { uploadImage } from "../../middlewares/upload-image.middleware";
+import { uploadAvatar } from "../../middlewares/upload-avatar.middleware";
 import {
   getLoggedInUser,
   getUserById,
@@ -15,7 +15,7 @@ user.get("/me", requireAuthentication, getLoggedInUser);
 user.post(
   "/me/avatar",
   requireAuthentication,
-  uploadImage.single("avatar"),
+  uploadAvatar.single("avatar"),
   saveAvatarImage
 );
 user.get(

@@ -12,16 +12,14 @@ const storage = new CloudinaryStorage({
     return {
       folder: "assets",
       public_id: id,
-      format: "png",
-      width: 128,
-      height: 128,
+      format: "jpg",
     };
   },
 });
 
-export const uploadImage = multer({
+export const uploadPostImage = multer({
   storage,
-  limits: { fileSize: 1000 * 1000 * 10 },
+  limits: { fileSize: 1000 * 1000 * 100 },
   // We check file extension, mimeType
   fileFilter(request, file, callback) {
     const filetypes = /png|jpg|jpeg/;

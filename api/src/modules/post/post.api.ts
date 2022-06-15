@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authenticaticate } from "../../middlewares/authenticate.middleware";
 import { requireAuthentication } from "../../middlewares/require-authentication.middleware";
-import { uploadImage } from "../../middlewares/upload-image.middleware";
+import { uploadPostImage } from "../../middlewares/upload-post-image.middleware";
 import { validateBody } from "../../middlewares/validate-body.middleware";
 import { validateQuery } from "../../middlewares/validate-query.middleware";
 import {
@@ -21,7 +21,7 @@ post.post(
   "/",
   requireAuthentication,
   validateBody(postCreateSchema),
-  uploadImage.single("media"),
+  uploadPostImage.single("media"),
   createPost
 );
 post.put(
