@@ -2,9 +2,13 @@ import { http } from "../../lib";
 import { PostVoteType } from "../../types/enum";
 import { Post } from "../../types/interfaces/post";
 
-export function getPostsByPage({ pageParam = 0 }): Promise<Post[]> {
+export function getPostsByPage({
+  pageParam = 0,
+  sort = "likes",
+  order = "desc",
+}): Promise<Post[]> {
   return http
-    .get("/posts", { params: { limit: 5, offset: 5 * pageParam } })
+    .get("/posts", { params: { limit: 5, offset: 5 * pageParam, sort, order } })
     .then((response) => response.data);
 }
 
