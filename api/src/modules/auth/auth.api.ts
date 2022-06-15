@@ -7,12 +7,13 @@ import {
   registerUser,
   removeRefreshToken,
 } from "./auth.controller";
+import { loginRateLimit } from "./login-rate-limit.middleware";
 import { loginSchema } from "./schemas/login.schema";
 import { registerSchema } from "./schemas/register.schema";
 
 export const auth = Router();
 
 auth.post("/register", validateBody(registerSchema), registerUser);
-auth.post("/login", validateBody(loginSchema), loginUser);
+auth.post("/login", loginRateLimit, validateBody(loginSchema), loginUser);
 auth.get("/token", requireRefreshToken, getNewToken);
 auth.post("/logout", requireRefreshToken, removeRefreshToken);
