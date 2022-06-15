@@ -1,4 +1,4 @@
-import { wrap } from "@mikro-orm/core";
+import { QueryOrder, wrap } from "@mikro-orm/core";
 import { Request, Response } from "express";
 import { z } from "zod";
 import { PostVote, PostVoteType } from "../../db/entities/post-vote.entity";
@@ -10,7 +10,8 @@ import { postVoteSchema } from "./schemas/post-vote.schema";
 import { postsSchema } from "./schemas/posts.schema";
 
 export async function getAllPosts(request: Request, response: Response) {
-  const { limit, offset }: z.infer<typeof postsSchema> = request.query as any;
+  const { limit, offset, sort, order }: z.infer<typeof postsSchema> =
+    request.query as any;
 
   const qb = request.em.createQueryBuilder(Post, "p");
 
@@ -26,6 +27,8 @@ export async function getAllPosts(request: Request, response: Response) {
   if (limit) qb.limit(limit);
 
   if (offset) qb.offset(offset);
+
+  if (sort) qb.orderBy({ [sort]: order ?? QueryOrder.ASC });
 
   const raw = await qb.execute("all");
   const result = raw.map((data: any) => {
