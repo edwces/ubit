@@ -7,7 +7,9 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary.v2,
   params: (request: Request, file) => {
     const salt = Date.now();
-    const filename = encodeURI(file.originalname);
+    const filename = encodeURI(file.originalname)
+      .replace(/\(/g, "%28")
+      .replace(/\)/g, "%29");
     const id = `${filename}-${salt}`;
     return {
       folder: "assets",

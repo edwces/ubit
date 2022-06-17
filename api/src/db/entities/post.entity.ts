@@ -45,7 +45,10 @@ export class Post extends CustomBaseEntity {
   toJSON(strip = [], ...args: any[]) {
     const o = wrap<Post>(this, true).toObject(...args) as EntityDTO<Post>;
     if (this.media) {
-      o.media!.url = cloudinary.v2.url(o.media!.path, { width: 400 });
+      o.media!.url = cloudinary.v2
+        .url(o.media!.path, { width: 400 })
+        .replace(/\(/g, "%28")
+        .replace(/\)/g, "%29");
     }
     return o;
   }
